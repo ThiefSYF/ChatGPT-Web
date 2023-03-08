@@ -75,17 +75,20 @@
             background:rgba(0,0,0,0.1);
         }
         .bubble{
-            max-width: 400px;
+            max-width: 600px;
+            min-height: 20px;
             padding: 10px;
             border-radius: 5px;
             position: relative;
             color: #000;
             word-wrap:break-word;
             word-break:normal;
+            font-size: 20px;
         }
         .item-left .bubble{
             margin-left: 15px;
             background-color: #fff;
+            font-size: 20px;
         }
         .item-left .bubble:before{
             content: "";
@@ -97,11 +100,14 @@
             border-right: 10px solid #fff;
             border-bottom: 10px solid transparent;
             left: -20px;
+
         }
         .item-right .bubble{
             margin-right: 15px;
             background-color: #9eea6a;
+            font-size: 20px;
         }
+
         .item-right .bubble:before{
             content: "";
             position: absolute;
@@ -112,6 +118,7 @@
             border-right: 10px solid transparent;
             border-bottom: 10px solid transparent;
             right: -20px;
+
         }
         .item{
             margin-top: 15px;
@@ -138,8 +145,8 @@
         }
 
         .avatar img{
-            width: 42px;
-            height: 42px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
         }
         .input-area{
@@ -148,11 +155,12 @@
             display: flex;
             flex-flow: column;
             background-color: #fff;
+            font-size: 18px;
         }
         textarea{
             flex: 1;
             padding: 5px;
-            font-size: 20px;
+            font-size: 17px;
             border: none;
             cursor: pointer;
             overflow-y: auto;
@@ -196,14 +204,14 @@
         }
         /* 滚动槽 */
         ::-webkit-scrollbar-track {
-            -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+            /*-webkit-box-shadow:inset006pxrgba(0,0,0,0.3);*/
             border-radius:8px;
         }
         /* 滚动条滑块 */
         ::-webkit-scrollbar-thumb {
             border-radius:10px;
             background:rgba(0,0,0,0);
-            -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+            /*-webkit-box-shadow:inset006pxrgba(0,0,0,0.5);*/
         }
         {#markdown列表样式#}
         .markdown ol, .markdown ul {
@@ -256,7 +264,7 @@
         <div class="title">YoRHa.Lab-314</div>
     </div>
     <div class="nav">
-        <div class="title">导航栏区域占位</div>
+        <div class="title">导航栏区域占位，之后记得改</div>
     </div>
     <div class="mainpart">
         <div class="textcontainer">
@@ -264,10 +272,10 @@
                 <div class="item item-center"><span>你已成功连接至YoRHa网络。</span></div>
             </div>
             <div class="input-area">
-                <textarea name="text" id="textarea" class="chat_area"></textarea>
+                <textarea name="text" id="textarea" class="chat_area" ></textarea>
                 <div class="button-area">
                     <button id="cz-btn" class="talk_sub">清空当前代号数据</button>
-                    <button id="cl-btn" class="talk_sub">当前为长通讯模式</button>
+                    <button id="cl-btn" class="talk_sub">当前为短通讯模式</button>
                     <button id="send-btn" class="talk_sub">发 送</button>
                 </div>
             </div>
@@ -277,10 +285,10 @@
 </div>
 </body>
 <script>
-    var markdown_text = "## YoRHa\n##";
+    var markdown_text = "## 这里是YoRHa 21O联络员，请先输入成员代码以提供更有效地协助支持，如果尚未录入314-Lab数据库，请先输入“new_code:xxx”录入，如需要独立单次交换大量数据信息，请开启短通讯模式。如需保持长时间联络，请开启长通讯模式。\n##";
     var html = marked.marked(markdown_text);
     console.log(html);
-    html = '<div class="item item-left"><div class="avatar"><img src="./static/chatgpt.png" /></div><div class="bubble bubble-left markdown">' + html + '</div></div>';
+    html = '<div class="item item-left"><div class="avatar"><img src="./static/yorha-connect.jpg" /></div><div class="bubble bubble-left markdown">' + html + '</div></div>';
     $(".content").append(html);
     $(".content").scrollTop($(".content")[0].scrollHeight);
 
@@ -291,9 +299,9 @@
         success: function (data) {
             console.log(data);
             if (data.mode === "normal") {
-                $("#cl-btn").text("当前为普通对话");
+                $("#cl-btn").text("当前为短通讯模式");
             } else {
-                $("#cl-btn").text("当前为连续对话");
+                $("#cl-btn").text("当前为长通讯模式");
             }
         }
     })
@@ -307,9 +315,9 @@
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 if (data[i].role == "user") {
-                    html += '<div class="item item-right"><div class="bubble bubble-right">' + data[i].content + '</div><div class="avatar"><img src="./static/people.jpg" /></div></div>';
+                    html += '<div class="item item-right"><div class="bubble bubble-right">' + data[i].content + '</div><div class="avatar"><img src="./static/nier.jpg" /></div></div>';
                 } else {
-                    html += '<div class="item item-left"><div class="avatar"><img src="./static/chatgpt.png" /></div><div class="bubble bubble-left markdown">' + marked.marked(data[i].content) + '</div></div>';
+                    html += '<div class="item item-left"><div class="avatar"><img src="./static/yorha-connect.jpg" /></div><div class="bubble bubble-left markdown">' + marked.marked(data[i].content) + '</div></div>';
                 }
             }
             $(".content").append(html);
@@ -326,7 +334,7 @@
             return;
         }
 
-        var html = '<div class="item item-right"><div class="bubble bubble-right">' + text + '</div><div class="avatar"><img src="./static/people.jpg" /></div></div>';
+        var html = '<div class="item item-right"><div class="bubble bubble-right">' + text + '</div><div class="avatar"><img src="./static/nier.jpg" /></div></div>';
         $(".content").append(html);
         $("#textarea").val("");
         $(".content").scrollTop($(".content")[0].scrollHeight);
@@ -342,7 +350,7 @@
                 if (data['redirect']!=undefined) {
                     window.location.href=data['redirect']
                 } else {
-                    var html = '<div class="item item-left"><div class="avatar"><img src="./static/chatgpt.png" /></div><div class="bubble bubble-left markdown">' + marked.marked(data.content) + '</div></div>';
+                    var html = '<div class="item item-left"><div class="avatar"><img src="./static/yorha-connect.jpg" /></div><div class="bubble bubble-left markdown">' + marked.marked(data.content) + '</div></div>';
                     $(".content").append(html);
                     $(".content").scrollTop($(".content")[0].scrollHeight);
                 }
@@ -358,7 +366,7 @@
     });
     $('#cz-btn').click(function () {
         {#弹窗提醒是否确认删除#}
-        if (confirm("确认删除所有聊天记录吗？")) {
+        if (confirm("确认删除该代号下所有聊天记录吗？")) {
             $.get("/deleteHistory", function (data) {
                 console.log(data);
             });
@@ -366,28 +374,28 @@
         }
     });
     $('#cl-btn').click(function () {
-        if ($("#cl-btn").text() === "当前为普通对话") {
+        if ($("#cl-btn").text() === "当前为短通讯模式") {
             $.get("/changeModeContinuous", function (data) {
                 if(data.code===-1){
                     alert(data.msg)
                 }  else {
-                    var html = '<div class="item item-center"><span>切换至连续对话模式</span></div>'
+                    var html = '<div class="item item-center"><span>切换至长通讯模式</span></div>'
                     $(".content").append(html);
                     $(".content").scrollTop($(".content")[0].scrollHeight);
                 }
             });
-            $("#cl-btn").text("当前为连续对话");
+            $("#cl-btn").text("当前为长通讯模式");
         } else {
             $.get("/changeModeNormal", function (data) {
                 if(data.code===-1){
                     alert(data.msg)
                 }  else {
-                    var html = '<div class="item item-center"><span>切换至普通对话模式</span></div>'
+                    var html = '<div class="item item-center"><span>切换至短通讯模式</span></div>'
                     $(".content").append(html);
                     $(".content").scrollTop($(".content")[0].scrollHeight);
                 }
             });
-            $("#cl-btn").text("当前为普通对话");
+            $("#cl-btn").text("当前为短通讯对话");
         }
     });
 </script>

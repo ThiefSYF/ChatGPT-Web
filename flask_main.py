@@ -13,11 +13,11 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 #os.environ['HTTP_PROXY'] = 'socks5://127.0.0.1:7890'
 #os.environ['HTTPS_PROXY'] = 'socks5://127.0.0.1:7890'
-openai.api_key = 'os.getenv("none")'        # 从环境变量中获取api_key,或直接设置api_key
+openai.api_key = 'apikey'        # 从环境变量中获取api_key,或直接设置api_key
 
 chat_context_number_max = 5         # 连续对话模式下的上下文最大数量
 lock = threading.Lock()         # 用于线程锁
-
+preset="你现在是尼尔机械纪元中隶属于YoRHa寄叶部队的21O联络员，现在在地堡和我进行通信协助支持，模仿按照21O联络员的说话方式，性格和我对话。"
 
 def get_response_from_ChatGPT_API(message_context):
     """
@@ -97,7 +97,6 @@ def get_user_info(user_id):
     :param user_id: 用户id
     :return: 用户信息
     """
-    print(__name__)
     lock.acquire()
     user_info = all_user_dict.get(user_id)
     lock.release()
@@ -132,8 +131,8 @@ def load_messages():
     print(__name__)
     check_session(session)
     if session.get('user_id') is None:
-        messages_history = [{"role": "assistant", "content": "当前会话为首次请求，请输入已有用户id或创建新的用户id。"
-                                                             "已有用户id请在输入框中输入，创建新的用户id请在输入框中输入new_id:xxx"}]
+        messages_history = [{"role": "assistant", "content": "当前连接为首次连接，请输入已有成员代号或创建新的成员代号。"
+                                                             "已有成员代号请在输入框中输入，创建新的成员代号请在输入框中输入new_code:xxx"}]
     else:
         user_info = get_user_info(session.get('user_id'))
         messages_history = user_info['messages_history']
@@ -150,24 +149,25 @@ def return_message():
     send_message = request.values.get("send_message")
     print("用户发送的消息：" + send_message)
     if session.get('user_id') is None:
-        if send_message.strip().startswith("new_id:"):
+        if send_message.strip().startswith("new_code:"):
             user_id = send_message.split(":")[1]
             session['user_id'] = user_id
             lock.acquire()
-            all_user_dict.put(user_id, {"chat_with_history": False, "have_chat_context": 0,  "messages_history": [{"role": "assistant", "content": f"当前对话的用户id为 `{user_id}`"}]})        # 默认普通对话
+            all_user_dict.put(user_id, {"chat_with_history": False, "have_chat_context": 0,  "messages_history": [{"role": "assistant", "content": f"当前联络的成员代号为 `{user_id}`"+preset}]})        # 默认普通对话
             lock.release()
             print("创建新的用户id:\t", user_id)
-            return {"content": "创建新的用户id成功，可以开始对话了"}
+            asyncio.run(save_all_user_dict())
+            return {"content": "成员代号已录入地堡数据库，现在将为你提供支持协助。"}
         else:
             user_id = send_message.strip()
             user_info = get_user_info(user_id)
             if user_info is None:
-                return {"content": "用户id不存在，请重新输入或创建新的用户id"}
+                return {"content": "成员代号不存在，请重新输入或创建新的成员代号"}
             else:
                 session['user_id'] = user_id
                 print("已有用户id:\t", user_id)
                 # 重定向到index
-                return {"redirect": "/"}
+                return {"content":"Code:"+user_id+"已识别，现在将为你提供支持协助。"}
     else:
         user_info = get_user_info(session.get('user_id'))
         messages_history = user_info['messages_history']
@@ -191,6 +191,7 @@ async def save_all_user_dict():
     异步存储all_user_dict
     :return:
     """
+    print("go1")
     await asyncio.sleep(0)
     lock.acquire()
     with open("all_user_dict.pkl", "wb") as f:
@@ -224,11 +225,11 @@ def change_mode_normal():
     """
     check_session(session)
     if not check_user_bind(session):
-        return {"code": -1, "msg": "请先创建或输入已有用户id"}
+        return {"code": -1, "msg": "请先录入或输入已有成员代号"}
     user_info = get_user_info(session.get('user_id'))
     user_info['chat_with_history'] = False
     print("开启普通对话")
-    return {"code": 0, "content": "开启普通对话"}
+    return {"code": 0, "content": "已开启长通讯模式对话"}
 
 
 @app.route('/changeModeContinuous', methods=['GET'])
@@ -241,11 +242,11 @@ def change_mode_continuous():
     chat_context_now = 0
     check_session(session)
     if not check_user_bind(session):
-        return {"code": -1, "msg": "请先创建或输入已有用户id"}
+        return {"code": -1, "msg": "请先录入或输入已有成员代号"}
     user_info = get_user_info(session.get('user_id'))
     user_info['chat_with_history'] = True
     print("开启连续对话")
-    return {"code": 0, "content": "开启连续对话"}
+    return {"code": 0, "content": "已开启连续模式对话"}
 
 
 @app.route('/deleteHistory', methods=['GET'])
@@ -256,15 +257,16 @@ def reset_history():
     """
     check_session(session)
     if not check_user_bind(session):
-        return {"code": -1, "msg": "请先创建或输入已有用户id"}
+        return {"code": -1, "msg": "请先录入或输入已有成员代号"}
     user_info = get_user_info(session.get('user_id'))
     user_info['messages_history'] = [user_info['messages_history'][0]]
     print("清空历史记录")
-    return "2"
+    #print(all_user_dict.stack)
+    return redirect(url_for('/'))
 
 
 if __name__ == '__main__':
-    all_user_dict = LRUCache(12)  # 设置最多存储12个用户的上下文
+    all_user_dict = LRUCache(50)  # 设置最多存储50个用户的上下文
     if os.path.exists("all_user_dict.pkl"):
         with open("all_user_dict.pkl", "rb") as pickle_file:
             all_user_dict = pickle.load(pickle_file)
@@ -277,4 +279,4 @@ if __name__ == '__main__':
         # 退出程序
         print("请在openai官网注册账号，获取api_key填写至程序内或命令行参数中")
         exit()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)

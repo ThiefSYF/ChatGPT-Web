@@ -32,4 +32,4 @@ if __name__ == '__main__':
     cache.put(0, 1)
     cache.put(1, 1)
     cache.put(2, 1)
-    print(0 in cache)
+    print(cache)
