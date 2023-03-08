@@ -11,9 +11,9 @@ import asyncio
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
-os.environ['HTTP_PROXY'] = 'socks5://127.0.0.1:7890'
-os.environ['HTTPS_PROXY'] = 'socks5://127.0.0.1:7890'
-openai.api_key = os.getenv("OPENAI_API_KEY")        # 从环境变量中获取api_key,或直接设置api_key
+#os.environ['HTTP_PROXY'] = 'socks5://127.0.0.1:7890'
+#os.environ['HTTPS_PROXY'] = 'socks5://127.0.0.1:7890'
+openai.api_key = 'os.getenv("none")'        # 从环境变量中获取api_key,或直接设置api_key
 
 chat_context_number_max = 5         # 连续对话模式下的上下文最大数量
 lock = threading.Lock()         # 用于线程锁
@@ -97,6 +97,7 @@ def get_user_info(user_id):
     :param user_id: 用户id
     :return: 用户信息
     """
+    print(__name__)
     lock.acquire()
     user_info = all_user_dict.get(user_id)
     lock.release()
@@ -111,7 +112,15 @@ def index():
     :return: 主页
     """
     check_session(session)
-    return render_template('index.html')
+    print(request.method)
+    if request.method == 'POST':
+        password = request.form.get('pwd')
+        if password == '123456':
+            return render_template('index.html')
+        else:
+            return render_template('login.html',msg='识别码错误')
+    else:
+        return render_template('login.html')
 
 
 @app.route('/loadHistory', methods=['GET', 'POST'])
@@ -120,6 +129,7 @@ def load_messages():
     加载聊天记录
     :return: 聊天记录
     """
+    print(__name__)
     check_session(session)
     if session.get('user_id') is None:
         messages_history = [{"role": "assistant", "content": "当前会话为首次请求，请输入已有用户id或创建新的用户id。"

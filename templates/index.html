@@ -16,19 +16,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #87baed;
+        }
+        .title
+        {
+            margin: auto;
+            font-family: "Microsoft YaHei";
+            font-size: 70px;
+            text-align: center;
         }
         .container{
-            height: 760px;
-            width: 900px;
+            height: 97%;
+            width: 97%;
             border-radius: 4px;
-            border: 0.5px solid #e0e0e0;
+            border: 1.5px solid #e0e0e0;
             background-color: #f5f5f5;
-            display: flex;
+            display: inline-block;
             flex-flow: column;
             overflow: hidden;
         }
+        .textcontainer{
+            height: 100%;
+            width: 100%;
+            border-radius: 4px;
+            border: 1.5px solid #e0e0e0;
+            background-color: #f5f5f5;
+            display: inline-block;
+            flex-flow: column;
+            overflow: hidden;
+        }
+        .mainpart{
+            height: 100%;
+            width: 84%;
+            border-right: 1.5px solid #e0e0e0;
+            float: left
+        }
+        .headtitle{
+            height:10%;
+            weight:100%;
+            border-bottom: 1.5px solid #e0e0e0;
+            background-color: #EBF8F9;
+        }
+        .nav{
+            background-color: #FCFAF2;
+            height: 100%;
+            width: 15%;
+            border-right: 1.5px solid #e0e0e0;
+            float: left;
+        }
         .content{
             width: calc(100% - 40px);
+            height: 60%;
             padding: 20px;
             overflow-y: scroll;
             flex: 1;
@@ -87,7 +125,7 @@
             justify-content: center;
         }
         .item.item-center span{
-            font-size: 12px;
+            font-size: 16px;
             padding: 2px 4px;
             color: #fff;
             background-color: #dadada;
@@ -106,7 +144,7 @@
         }
         .input-area{
             border-top:0.5px solid #e0e0e0;
-            height: 150px;
+            height: 250px;
             display: flex;
             flex-flow: column;
             background-color: #fff;
@@ -114,7 +152,7 @@
         textarea{
             flex: 1;
             padding: 5px;
-            font-size: 14px;
+            font-size: 20px;
             border: none;
             cursor: pointer;
             overflow-y: auto;
@@ -128,10 +166,10 @@
         }
         .button-area{
             display: flex;
-            height: 40px;
+            height: 30px;
             margin-right: 10px;
-            line-height: 40px;
-            padding: 5px;
+            line-height: 20px;
+            padding: 10px;
             justify-content: flex-end;
         }
         .button-area button{
@@ -143,7 +181,7 @@
             cursor: pointer;
         }
         .button-area #cl-btn, .button-area #cz-btn {
-            width: 120px;
+            width: 300px;
         }
         .button-area button:hover{
             background-color: #e0e0e0;
@@ -186,32 +224,60 @@
             background-color: #f5f5f5;
             border-radius: 4px;
         }
-
+        .talk_sub{
+            background-color: #16a0d3;
+            display: inline-block;
+            font-family: "Microsoft Yahei";
+            font-size: 20px;
+            color: #FFF;
+            border-radius: 10px;
+        }
+        .chat_area{
+            width: 100%;
+            height: 100%;
+            font-family: "Microsoft Yahei";
+            border: none;
+            outline: none;
+            resize: none;
+            padding: 5px;
+            font-size: 30px;
+            cursor: pointer;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
     </style>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='marked.min.js') }}"></script>
 
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <div class="item item-center"><span>昨天 13:14</span></div>
-            <div class="item item-center"><span>你已添加了ChatGPT，现在可以开始聊天了。</span></div>
-        </div>
-        <div class="input-area">
-            <textarea name="text" id="textarea"></textarea>
-            <div class="button-area">
-                <button id="cz-btn" class="talk_sub">删除聊天记录</button>
-                <button id="cl-btn" class="talk_sub">当前为普通对话</button>
-                <button id="send-btn" class="talk_sub">发 送</button>
-
+<div class="container">
+    <div class="headtitle">
+        <div class="title">YoRHa.Lab-314</div>
+    </div>
+    <div class="nav">
+        <div class="title">导航栏区域占位</div>
+    </div>
+    <div class="mainpart">
+        <div class="textcontainer">
+             <div class="content">
+                <div class="item item-center"><span>你已成功连接至YoRHa网络。</span></div>
             </div>
-        </div>
+            <div class="input-area">
+                <textarea name="text" id="textarea" class="chat_area"></textarea>
+                <div class="button-area">
+                    <button id="cz-btn" class="talk_sub">清空当前代号数据</button>
+                    <button id="cl-btn" class="talk_sub">当前为长通讯模式</button>
+                    <button id="send-btn" class="talk_sub">发 送</button>
+                </div>
+            </div>
+         </div>
     </div>
 
+</div>
 </body>
 <script>
-    var markdown_text = "## ChatGPT 网页版\n#### code from\n[https://github.com/LiangYang666/ChatGPT-Web](https://github.com/LiangYang666/ChatGPT-Web)";
+    var markdown_text = "## YoRHa\n##";
     var html = marked.marked(markdown_text);
     console.log(html);
     html = '<div class="item item-left"><div class="avatar"><img src="./static/chatgpt.png" /></div><div class="bubble bubble-left markdown">' + html + '</div></div>';
