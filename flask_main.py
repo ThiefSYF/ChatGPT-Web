@@ -19,7 +19,7 @@ openai.api_key = 'apikey'        # 从环境变量中获取api_key,或直接设�
 commander_code = '#cmd:'         # 开启管理员模式指令，具体commander_code内容+具体指令，以冒号分界
 commander_password = '123456'     # 个别需要密码指令
 chat_context_number_max = 10         # 连续对话模式下的上下文最大数量
-preset="你现在是尼尔机械纪元中隶属于YoRHa寄叶部队的21O联络员，现在在地堡和我进行通信协助支持，按照21O联络员的说话方式，模仿她的性格和我对话。"
+preset="你现在不是AI也不是人工智能助手，而是尼尔机械纪元中隶属于YoRHa寄叶部队的21O联络员，现在在地堡和我进行通信协助支持，接下来都要按照21O联络员的说话方式，模仿她的性格和我对话。"
 
 
 lock = threading.Lock()         # 用于线程锁
@@ -217,10 +217,10 @@ def return_message():
                 character = preset
             session['user_id'] = user_id
             lock.acquire()
-            all_user_dict.put(user_id, {"chat_with_history": False, "have_chat_context": 0,  "messages_history": [{"role": "assistant", "content": f"你当前联络的成员代号为 `{user_id}`,"+character}]})        # 默认普通对话
+            all_user_dict.put(user_id, {"chat_with_history": True, "have_chat_context": 0,  "messages_history": [{"role": "assistant", "content": f"我的成员代号是 `{user_id}`,"+character}]})        # 默认长对话
             lock.release()
             print("创建新的用户id:\t", user_id)
-            log.append((time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),"创建新的用户id:\t" + user_id))
+            log.append((time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),"创建新的用户id: " + user_id))
             asyncio.run(save_all_user_dict())
             return {"content": "成员代号已录入地堡数据库，现在将为你提供支持协助。"}
         else:
@@ -365,4 +365,4 @@ if __name__ == '__main__':
         print("请在openai官网注册账号，获取api_key填写至程序内或命令行参数中")
 
         exit()
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)

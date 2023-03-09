@@ -132,7 +132,7 @@
             justify-content: center;
         }
         .item.item-center span{
-            font-size: 16px;
+            font-size: 18px;
             padding: 2px 4px;
             color: #fff;
             background-color: #dadada;
@@ -275,7 +275,7 @@
                 <textarea name="text" id="textarea" class="chat_area" ></textarea>
                 <div class="button-area">
                     <button id="cz-btn" class="talk_sub">清空当前代号数据</button>
-                    <button id="cl-btn" class="talk_sub">当前为短通讯模式</button>
+                    <button id="cl-btn" class="talk_sub">当前为长通讯模式</button>
                     <button id="send-btn" class="talk_sub">发 送</button>
                 </div>
             </div>
@@ -395,7 +395,7 @@
                     $(".content").scrollTop($(".content")[0].scrollHeight);
                 }
             });
-            $("#cl-btn").text("当前为短通讯对话");
+            $("#cl-btn").text("当前为短通讯模式");
         }
     });
 </script>
