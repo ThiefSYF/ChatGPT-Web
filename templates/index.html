@@ -47,7 +47,7 @@
         }
         .mainpart{
             height: 100%;
-            width: 84%;
+            width: 89%;
             border-right: 1.5px solid #e0e0e0;
             float: left
         }
@@ -60,7 +60,7 @@
         .nav{
             background-color: #FCFAF2;
             height: 100%;
-            width: 15%;
+            width: 10%;
             border-right: 1.5px solid #e0e0e0;
             float: left;
         }
@@ -285,7 +285,7 @@
 </div>
 </body>
 <script>
-    var markdown_text = "## 这里是YoRHa 21O联络员，请先输入成员代码以提供更有效地协助支持，如果尚未录入314-Lab数据库，请先输入“new_code:xxx”录入，如需要独立单次交换大量数据信息，请开启短通讯模式。如需保持长时间联络，请开启长通讯模式。\n##";
+    var markdown_text = "## 这里是YoRHa 21O联络员，请先输入成员代码以提供更有效地协助支持。\n 如果尚未录入314-Lab数据库，请先输入“new_code:xxx”录入，如需要单次交换大量数据信息，请使用短通讯模式。如需保持长时间联络，请使用长通讯模式。\n";
     var html = marked.marked(markdown_text);
     console.log(html);
     html = '<div class="item item-left"><div class="avatar"><img src="./static/yorha-connect.jpg" /></div><div class="bubble bubble-left markdown">' + html + '</div></div>';

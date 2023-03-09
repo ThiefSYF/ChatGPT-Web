@@ -22,14 +22,21 @@ class LRUCache:
         if len(self.stack) > self.capacity:
             self.stack.popitem(last=False)
 
+    def delete(self, key):
+        self.stack.pop(key)
+
+    def clear(self):
+        self.stack.clear()
+
     def __contains__(self, key):
         return key in self.stack
 
 
 if __name__ == '__main__':
-    cache = LRUCache(2)
+    cache = LRUCache(3)
 
-    cache.put(0, 1)
-    cache.put(1, 1)
-    cache.put(2, 1)
-    print(cache)
+    cache.put('0', 1)
+    cache.put('1', 1)
+    cache.put('2', 1)
+    cache.clear()
+    print(cache.stack)
